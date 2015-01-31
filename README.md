@@ -1,6 +1,11 @@
 # Thrift::LocalTypeChecking
 
-TODO: Write a gem description
+![https://circleci.com/gh/vicentereig/thrift-aws-async_transport.png?circle-token=fd717f028b4a75e6bf1ef4dc2b7d57f6661c5f0e](https://circleci.com/gh/vicentereig/thrift-local_type_checking.png?circle-token=fd717f028b4a75e6bf1ef4dc2b7d57f6661c5f0e)
+
+Enables local type checking per client, as opposed to `Thrift.type_checking = true` flag
+which affects every client running on the client application.
+
+It also recursively validates structs.
 
 ## Installation
 
@@ -20,7 +25,14 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```thrift
+
+```
+
+```ruby
+
+
+```
 
 ## Contributing
 
