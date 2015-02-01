@@ -26,12 +26,33 @@ Or install it yourself as:
 ## Usage
 
 ```thrift
+namespace rb Accounts.V1
+
+struct EmailAddress {
+   1:i64 id
+   2:string email
+}
+
+struct User {
+    1:i64 id
+    2:required list<EmailAddress> emails
+}
+
+struct Account {
+    1:i64 id
+    3:list<User> users
+}
+
+service AccountsService {
+  void create(1:Account account)
+}
 
 ```
 
 ```ruby
-
-
+client  = Accounts::V1::AccountsService::Client.new.extend(Thrift::LocalTypeChecking)
+account = Accounts::V1::Account.new(id: 'not a number! =D', users: nil)
+client.create(account)
 ```
 
 ## Contributing
