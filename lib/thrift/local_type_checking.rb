@@ -2,32 +2,44 @@ require 'thrift/local_type_checking/version'
 require 'thrift'
 
 module Thrift
-  module Validator
-    def self.extended(base_class)
-      byebug
-      base_class.send :include, InstanceMethods if base_class.is_a?(Class)
-    end
-
-    def validate
-      raise 'BOOOM!'
-    end
-  end
-
   module LocalTypeChecking
-    def self.extended(base_class)
-      base_class.send :include, InstanceMethods if base_class.is_a?(Class)
+    def self.extended(*)
+      ::Thrift::Struct.extend(ClassMethods)
+      ::Thrift::Struct.overwrite_initialize
+      ::Thrift::Struct.instance_eval do
+        def method_added(name)
+          return if name != :initialize
+          overwrite_initialize
+        end
+      end
     end
 
-    module InstanceMethods
-      def send_message(message_name, args_class, args={})
-        args_class.extend(Validator)
-        super(message_name, args_class, args)
-      end
+    module ClassMethods
+      def overwrite_initialize
+        class_eval do
+          unless method_defined?(:custom_initialize)
+            define_method(:custom_initialize) do |d={}|
+              original_initialize(d)
 
-      def send_oneway_message(message_name, args_class, args={})
-        args_class.extend(Validator)
-        super(message_name, args_class, args)
+              unless d.empty?
+                d.each do |name, value|
+                  unless name_to_id(name.to_s)
+                    raise Exception, "Unknown key given to #{self.class}.new: #{name}"
+                  end
+                  Thrift.check_type(value, struct_fields[name_to_id(name.to_s)], name)
+                  instance_variable_set("@#{name}", value)
+                end
+              end
+            end
+          end
+
+          if instance_method(:initialize) != instance_method(:custom_initialize)
+            alias_method :original_initialize, :initialize
+            alias_method :initialize, :custom_initialize
+          end
+        end
       end
     end
   end
 end
+

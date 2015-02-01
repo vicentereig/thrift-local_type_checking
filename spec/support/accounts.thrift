@@ -1,8 +1,13 @@
 namespace rb Accounts.V1
 
+struct EmailAddress {
+   1:i64 id
+   2:string email
+}
+
 struct User {
     1:i64 id
-    2:string email
+    2:required list<EmailAddress> emails
 }
 
 struct Account {
