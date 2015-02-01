@@ -1,6 +1,6 @@
 # Thrift::LocalTypeChecking
 
-![https://circleci.com/gh/vicentereig/thrift-aws-async_transport.png?circle-token=fd717f028b4a75e6bf1ef4dc2b7d57f6661c5f0e](https://circleci.com/gh/vicentereig/thrift-local_type_checking.png?circle-token=fd717f028b4a75e6bf1ef4dc2b7d57f6661c5f0e)
+[![Circle CI](https://circleci.com/gh/vicentereig/thrift-local_type_checking.svg?style=svg)](https://circleci.com/gh/vicentereig/thrift-local_type_checking)
 
 Enables local type checking per client, as opposed to `Thrift.type_checking = true` flag
 which affects every client running on the client application.
